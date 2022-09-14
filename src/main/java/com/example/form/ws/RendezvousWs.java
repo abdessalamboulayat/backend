@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3003")
+@CrossOrigin(origins = "http://localhost:3006")
 @RequestMapping("/api/v1/rendezvous ")
 public class RendezvousWs {
 

@@ -2,7 +2,8 @@ package com.example.form.service;
 
 import com.example.form.bean.Contact;
 import com.example.form.bean.Formulaire;
-import com.example.form.dao.ContactDao;
+import com.example.form.repository.ContactRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +12,22 @@ import java.util.List;
 
 @Service
 public class ContactService {
+	
+	@Autowired
+    private ContactRepo contactRepo;
+	
     public List<Contact> findAll() {
-        return contactDao.findAll();
+        return contactRepo.findAll();
     }
-
-    @Autowired
-    private ContactDao contactDao;
 
     public long count() {
 
-        return contactDao.count();
+        return contactRepo.count();
     }
 
 
     public Contact findByEmail(String email) {
-        return contactDao.findByEmail(email);
+        return contactRepo.findByEmail(email);
     }
 
     public int save(Contact entity) {
@@ -33,13 +35,13 @@ public class ContactService {
 
             return -1;
         } else {
-            contactDao.save(entity);
+        	contactRepo.save(entity);
             return 1;
         }
     }
 
 
     public int countContactAllByEmail(String email) {
-        return contactDao.countContactAllByEmail(email);
+        return contactRepo.countContactAllByEmail(email);
     }
 }

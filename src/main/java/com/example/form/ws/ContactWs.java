@@ -8,28 +8,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3006"})
 @RequestMapping("api/v1/contact")
 public class ContactWs {
 
+	@Autowired
+    private ContactService contactService;
+	
     @GetMapping("/email/{email}")
     public Contact findByEmail(String email) {
 
         return contactService.findByEmail(email);
     }
-@PostMapping("/")
+    
+    @PostMapping("/")
     public int save( @RequestBody Contact entity) {
 
         return contactService.save(entity);
     }
-@GetMapping("/")
+    
+    @GetMapping("/")
     public List<Contact> findAll() {
         return contactService.findAll();
     }
-
-    @Autowired
-    private ContactService contactService;
-
 
     @GetMapping("/count/")
     public long count() {

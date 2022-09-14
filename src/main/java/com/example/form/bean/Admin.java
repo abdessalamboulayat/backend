@@ -14,7 +14,7 @@ public class Admin {
 
     private String email;
     private String password;
-@OneToMany(mappedBy = "admin")
+/*@OneToMany(mappedBy = "admin")
 private List <Evenement> evenement;
 @OneToMany(mappedBy = "admin")
 private   List <Formation> formation;
@@ -59,5 +59,5 @@ private   List <Formation> formation;
 
     public void setPassword(String password) {
         this.password = password;
-    }
+    }*/
 }

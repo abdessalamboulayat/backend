@@ -1,7 +1,8 @@
 package com.example.form.service;
 
 import com.example.form.bean.Consultation;
-import com.example.form.dao.ConsultationDao;
+import com.example.form.repository.ConsultationRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,31 +11,27 @@ import java.util.List;
 @Service
 public class ConsulationService {
 
-
     @Autowired
-    private ConsultationDao consultationDao;
+    private ConsultationRepo consultationRepo;
 
     public long count() {
 
-        return consultationDao.count();
+        return consultationRepo.count();
     }
 
-
-
-
     public Consultation findByEmail(String email) {
-        return consultationDao.findByEmail(email);
+        return consultationRepo.findByEmail(email);
     }
 
     public List<Consultation> findAll() {
-        return consultationDao.findAll();
+        return consultationRepo.findAll();
     }
 
     public int save(Consultation entity) {
         if (findByEmail(entity.getEmail()) != null) {
             return -1;
         } else {
-            consultationDao.save(entity);
+        	consultationRepo.save(entity);
             {
                 return 1;
             }

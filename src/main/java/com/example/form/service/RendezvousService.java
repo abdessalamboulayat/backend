@@ -1,7 +1,8 @@
 package com.example.form.service;
 
 import com.example.form.bean.Rendezvous;
-import com.example.form.dao.RendezvousDao;
+import com.example.form.repository.RendezvousRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,6 @@ public class RendezvousService {
         return rendezvousDao.findAll();
     }
     @Autowired
-    private RendezvousDao rendezvousDao;
+    private RendezvousRepo rendezvousDao;
 
 }

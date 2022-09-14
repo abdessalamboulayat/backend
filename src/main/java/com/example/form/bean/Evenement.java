@@ -1,6 +1,7 @@
 package com.example.form.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.awt.*;
@@ -9,20 +10,19 @@ import java.util.Date;
 @Entity
 public class Evenement {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
-   // private String name;
     private String titre;
     private String image;
     private String texte;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    //@JsonFormat(pattern = "yyyy-mm-dd")
     @Temporal(TemporalType.DATE)
     private Date date;
+    //@JsonIgnore
     @ManyToOne
-    private Admin admin;
+    @JoinColumn(name = "id_admin", nullable = false, referencedColumnName = "id")
+    private Safir safir;
 
     public Long getId() {
         return id;
@@ -72,12 +72,12 @@ public class Evenement {
         this.name = name;
     }
 */
-    public Admin getAdmin() {
-        return admin;
+    public Safir getAdmin() {
+        return safir;
     }
 
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public void setAdmin(Safir admin) {
+        this.safir = admin;
     }
 }
 

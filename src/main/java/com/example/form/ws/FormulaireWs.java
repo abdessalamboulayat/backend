@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3006"})
 @RequestMapping("api/v1/formulaire")
 public class FormulaireWs {
     @Autowired
@@ -20,7 +20,7 @@ public class FormulaireWs {
         return formulaireService.save(entity);
     }
 
-    @GetMapping("/")
+    @GetMapping("/getAllRequest")
     public List<Formulaire> findAll() {
         return formulaireService.findAll();
     }

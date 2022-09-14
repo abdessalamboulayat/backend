@@ -1,9 +1,9 @@
 package com.example.form.service;
 
 import com.example.form.bean.Evenement;
-import com.example.form.dao.AdminDao;
-import com.example.form.dao.EvenementDao;
 import com.example.form.dto.EvenementDto;
+import com.example.form.repository.EvenementRepo;
+
 import org.apache.logging.log4j.util.Strings;
 import org.hibernate.loader.custom.Return;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -32,19 +33,16 @@ import java.util.List;
 @Service
 public class EvenementService {
 
+	private String UPLOAD_FILE = System.getProperty("user.dir")+"/src/main/resources/static/images/evenements/";
+	@Autowired
+    private EvenementRepo evenementRepo;
 
     public  long count() {
-        return evenementDao.count();
+        return evenementRepo.count();
     }
 
-    @Autowired
-    private EvenementDao evenementDao;
-    @Autowired
-    private AdminDao adminDao;
-
-
     public List<Evenement> OrderByDate() {
-        List<Evenement> recentEvenement = evenementDao.OrderByDate();
+        List<Evenement> recentEvenement = evenementRepo.OrderByDate();
 
         List<Evenement> newevent =  new ArrayList<Evenement>();
         for(int i =0; i <3; i++){
@@ -55,38 +53,43 @@ public class EvenementService {
 
     }
 
-
-
-
-    private String fileDir = System.getProperty("user.dir")+"/src/main/resources/static/images";
-
-
-    public int save(EvenementDto evenement) throws IOException {
-       // Evenement evenement1 = evenementDao.getById(evenement.getId());
+    /*public int save(EvenementDto evenement) throws IOException {
+       
         DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
 
         if (findByTitre(evenement.getTitre()) != null) {
             return -1;
-        } //else if (evenement.getDate().compareTo(new Date()) < 0) {
-            //return -2;
-        //}
+        } 
         else {
-            Path path = Paths.get(fileDir,evenement.getFile().getOriginalFilename());
+            Path path = Paths.get(UPLOAD_FILE,evenement.getFile().getOriginalFilename());
             Files.write(path, evenement.getFile().getBytes());
             Evenement evenement1= new Evenement();
-            evenement1.setDate(evenement.getDate());
+            //evenement1.setDate(evenement.getDate());
             evenement1.setTexte(evenement.getTexte());
             evenement1.setTitre(evenement.getTitre());
             evenement1.setImage(evenement.getFile().getOriginalFilename());
-            /*evenement1.setAdmin(adminDao.findByEmail(evenement.getAdmin().getEmail()));//*/
-            evenementDao.save(evenement1);
+            evenementRepo.save(evenement1);
             return 1;
 
         }
-    }
+    }*/
+    
+    public String saveFile(MultipartFile file) {
+		try {
+    		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyyHHmmss");
+    		String newFileName = dateFormat.format(new Date())+file.getOriginalFilename();
+    		byte[] bytes = file.getBytes();
+    		Path path = Paths.get(UPLOAD_FILE+newFileName);
+    		Files.write(path, bytes);
+    		return newFileName;
+    	}
+    	catch(Exception ex) {
+    		return null;
+    	}
+	}
 
     public String getImage(String imageName){
-        Path path = Paths.get(fileDir, imageName);
+        Path path = Paths.get(UPLOAD_FILE, imageName);
         try {
             byte[] bytes = Files.readAllBytes(path);
             String base64 = Base64.getEncoder().encodeToString(bytes);
@@ -98,48 +101,44 @@ public class EvenementService {
         }
     }
 
-    public int update(Evenement evenement) {
-        Evenement evenement1 = evenementDao.getById(evenement.getId());
+    /*public int update(Evenement evenement) {
+        Evenement evenement1 = evenementRepo.getById(evenement.getId());
         if (evenement1 == null)
             return -1;
         else {
             evenement1.setDate(evenement.getDate());
             evenement1.setTexte(evenement.getTexte());
             evenement1.setTitre(evenement.getTitre());
-            evenementDao.save(evenement1);
+            evenementRepo.save(evenement1);
             return 1;
         }
-    }
+    }*/
 
 
     public List<Evenement> findByAdminEmail(String email) {
 
-      return evenementDao.findByAdminEmail(email);
+      return evenementRepo.findBySafirUsername(email);
     }
 
     public Evenement findByTitre(String titre) {
 
-        return evenementDao.findByTitre(titre);
+        return evenementRepo.findByTitre(titre);
     }
 
 
     public List<Evenement> findAll() {
-//recuperer les images
 
-        File file =new File(fileDir);
-        
-
-        return evenementDao.findAll();
+        return evenementRepo.findAll();
     }
 
 
     public List<Evenement> findByDate(Date date) {
 
-        return evenementDao.findByDate(date);
+        return evenementRepo.findByDate(date);
     }
-
-    @Transactional
+    
+    /*@Transactional
     public int deleteByTitre(String titre) {
-        return evenementDao.deleteByTitre(titre);
-    }
+        return evenementRepo.deleteByTitre(titre);
+    }*/
 }

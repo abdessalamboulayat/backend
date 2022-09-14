@@ -2,8 +2,9 @@ package com.example.form.service;
 
 import com.example.form.bean.Formulaire;
 import com.example.form.bean.User;
-import com.example.form.dao.FormulaireDao;
-import com.example.form.dao.UserDao;
+import com.example.form.repository.FormulaireRepo;
+import com.example.form.repository.UserRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +14,12 @@ import java.util.List;
 @Service
 public class FormulaireService {
     @Autowired                          // instancier  l'Object FormulaireDoa
-    private FormulaireDao formulaireDao;
+    private FormulaireRepo formulaireRepo;
     @Autowired
-    private UserDao userDao;
+    private UserRepo userRepo;
     public long count() {
 
-        return formulaireDao.count();
+        return formulaireRepo.count();
     }
 
 
@@ -49,46 +50,46 @@ public class FormulaireService {
             user.setNom(entity.getNom());
             user.setPrenom(entity.getPrenom());
 
-            userDao.save(user);
+            userRepo.save(user);
             formulaire1.setUser(user);// association  user au formulaire
 
 
-            formulaireDao.save(formulaire1);
+            formulaireRepo.save(formulaire1);
             user.setFormulaire(formulaire1);//asociation formulaire  au user
             System.out.println("=====================================================");
             System.out.println(user);//
             System.out.println("=====================================================");
-            userDao.save(user);
+            userRepo.save(user);
 
             return 1;
         }
     }
 
     public List<Formulaire> findAll() {
-        return formulaireDao.findAll();
+        return formulaireRepo.findAll();
     }
 
 
     public Formulaire findByNcin(String ncin) {
-        return formulaireDao.findByNcin(ncin);
+        return formulaireRepo.findByNcin(ncin);
     }
 
     public Formulaire findByUserRef(String ref) {
-        return formulaireDao.findByUserRef(ref);
+        return formulaireRepo.findByUserRef(ref);
     }
 
     @Transactional
     public int deleteByNcin(String ncin) {
 
-        return formulaireDao.deleteByNcin(ncin);
+        return formulaireRepo.deleteByNcin(ncin);
     }
 
 
     public Formulaire findByNumerodetelephone(String numerodetelephone) {
-        return formulaireDao.findByNumerodetelephone(numerodetelephone);
+        return formulaireRepo.findByNumerodetelephone(numerodetelephone);
     }
 
     public Formulaire findByEmail(String email) {
-        return formulaireDao.findByEmail(email);
+        return formulaireRepo.findByEmail(email);
     }
 }

@@ -1,7 +1,8 @@
 package com.example.form.service;
 
 import com.example.form.bean.User;
-import com.example.form.dao.UserDao;
+import com.example.form.repository.UserRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    private UserDao userDao;
+    private UserRepo userDao;
 
     public User findByRef(String ref) {
         if (ref == null) {

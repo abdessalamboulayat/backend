@@ -1,23 +1,18 @@
-package com.example.form.dao;
+package com.example.form.repository;
 
-import com.example.form.bean.Formulaire;
-import com.example.form.bean.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.example.form.bean.Formulaire;
 
 @Repository
-public interface FormulaireDao extends JpaRepository<Formulaire, Long> {
-    Formulaire findByRef(String ref);
+public interface FormulaireRepo extends JpaRepository<Formulaire, Long>{
+	Formulaire findByRef(String ref);
 
-Formulaire findByEmail(String email);
+    Formulaire findByEmail(String email);
     Formulaire findByUserRef(String ref);
     Formulaire findByNcin(String ref);
     Formulaire findByNumerodetelephone(String numerodetelephone);
 
     int deleteByNcin(String ncin);
-
-
-
 }

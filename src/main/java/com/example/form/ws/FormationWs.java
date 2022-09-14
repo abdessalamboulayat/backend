@@ -2,6 +2,7 @@ package com.example.form.ws;
 
 import com.example.form.bean.Formation;
 import com.example.form.dto.FormationDto;
+import com.example.form.repository.FormationRepo;
 import com.example.form.service.FormationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,20 +14,31 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3006"})
 @RequestMapping("api/v1/formation")
 public class FormationWs {
-
-    @RequestMapping(path = "/", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public int save(@ModelAttribute FormationDto formation) throws IOException {
-        return formationService.save(formation);
-    }
+	
+	@Autowired
+	private FormationRepo formationRepo;
+	@Autowired
+    private FormationService formationService;
 
     @GetMapping("/{date}/date")
     public List<Formation> findByDate(Date date) {
         return formationService.findByDate(date);
     }
 
+    @GetMapping("/getFormationById/{idFormation}")
+    public Formation getFormationById(@PathVariable("idFormation") String idFormation) {
+    	if(idFormation != null) {
+    		Long id = Long.parseLong(idFormation);
+    		return formationRepo.getById(id);
+    	}
+    	else {
+    		return null;
+    	}
+    }
+    
     @GetMapping("/{email}/email")
     public List<Formation> findByAdminEmail(String email) {
         return formationService.findByAdminEmail(email);
@@ -37,13 +49,7 @@ public class FormationWs {
         return formationService.findByTitre(titre);
     }
 
-    @Transactional
-    @DeleteMapping("/{Titre}/titre")
-    public int deleteByTitre(String titre) {
-        return formationService.deleteByTitre(titre);
-    }
-
-    @GetMapping("/")
+    @GetMapping("/getFormation")
     public List<Formation> findAll() {
         return formationService.findAll();
     }
@@ -57,9 +63,4 @@ public class FormationWs {
     public long count() {
         return formationService.count();
     }
-
-
-    @Autowired
-    private FormationService formationService;
-
 }

@@ -1,13 +1,14 @@
 package com.example.form.dto;
 
 import org.springframework.web.multipart.MultipartFile;
-
+import javax.persistence.Transient;
 import java.util.Date;
 
 public class FormationDto {
     private String titre;
     private String texte;
     private Date date;
+    @Transient
     private MultipartFile file;
 
     public String getTitre() {
