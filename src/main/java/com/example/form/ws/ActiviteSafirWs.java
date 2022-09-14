@@ -9,6 +9,7 @@ import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.form.bean.ActiviteSafir;
+import com.example.form.bean.Safir;
 import com.example.form.repository.ActiviteSafirRepo;
+import com.example.form.repository.SafirRepo;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3006"})
@@ -26,12 +29,14 @@ public class ActiviteSafirWs {
 	private String UPLOAD_FILE = System.getProperty("user.dir")+"/src/main/resources/static/images/activiteSafir/";
 	@Autowired
 	private ActiviteSafirRepo activiteSafirRepo;
+	@Autowired
+	private SafirRepo safirRepo;
 	
 	@GetMapping("/getAllActivities")
 	public List<ActiviteSafir> getAllActivities(){
 		return activiteSafirRepo.findAll();
 	}
-
+	
 	@GetMapping("/count")
 	public Long numberOfActiviteSafir(){
 		return activiteSafirRepo.count();

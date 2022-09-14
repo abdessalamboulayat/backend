@@ -1,21 +1,7 @@
 package com.example.form.ws;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -88,31 +74,30 @@ public class SafirWs {
 		return activiteSafirRepo.save(activiteSafir);
 	}
 	
-	@Transactional
-		@RequestMapping(path = "/updateActiviteSafir/{idActivite}", method = RequestMethod.PUT, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ActiviteSafir updateActiviteSafir(@PathVariable("idActivite") String idActivite,@ModelAttribute ActiviteSafirDto activiteSafirDto)throws Exception {
-		if(idActivite!=null){
-			Long id = Long.parseLong(idActivite);
-			ActiviteSafir activiteSafir = activiteSafirRepo.getById(id);
-			if(activiteSafir != null){
-				if(activiteSafirDto.getTitre()!=null){
+	@RequestMapping(path = "/updateActivite/{idActivite}", method = RequestMethod.PUT, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ActiviteSafir updateActivite(@PathVariable("idActivite") Long idActivite, @ModelAttribute ActiviteSafirDto activiteSafirDto) {
+		if(idActivite != null) {
+			ActiviteSafir activiteSafir = activiteSafirRepo.getById(idActivite);
+			if(activiteSafir != null) {
+			
+				if(activiteSafirDto.getTitre()!=null) {
 					activiteSafir.setTitre(activiteSafirDto.getTitre());
 				}
-				if(activiteSafirDto.getResume()!=null){
+				if(activiteSafirDto.getResume()!=null) {
 					activiteSafir.setResume(activiteSafirDto.getResume());
 				}
-				if(activiteSafirDto.getDateActiviteSafir() != null){
+				if(activiteSafirDto.getDateActiviteSafir()!=null) {
 					activiteSafir.setDateActiviteSafir(activiteSafirDto.getDateActiviteSafir());
 				}
-				if(activiteSafirDto.getText()!=null){
+				if(activiteSafirDto.getText()!=null) {
 					activiteSafir.setText(activiteSafirDto.getText());
 				}
 				return activiteSafirRepo.save(activiteSafir);
 			}
 		}
 		return null;
-	}	
-
+	}
+	
 	@DeleteMapping("/deleteActivite/{idActivite}")
 	public void deleteFormation(@PathVariable("idActivite") Long idActivite) {
 		
@@ -130,6 +115,13 @@ public class SafirWs {
 		String username = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
 		Safir currentUser = safirRepo.findByUsername(username);
 		return currentUser;
+	}
+	
+	@GetMapping("/getMyActivities")
+	public List<ActiviteSafir> getMyActivities(){
+		String username = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		Safir currentUser = safirRepo.findByUsername(username);
+		return activiteSafirRepo.findBySafir(currentUser);
 	}
 	
 }
